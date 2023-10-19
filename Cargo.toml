@@ -1,0 +1,10 @@
+[package]
+name = "Beth_Editor_GUI"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+gtk = "0.18.1"
+open = "5.0.0"
