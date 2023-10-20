@@ -5,6 +5,7 @@ const APP_ID: &str = "Beth_Editor_GUI";
 
 mod ui;
 mod buffer;
+mod data;
 
 fn main() -> glib::ExitCode {
     let app = Application::builder().application_id(APP_ID).build();
