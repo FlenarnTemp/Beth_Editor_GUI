@@ -607,7 +607,6 @@ fn build_treeview() -> TreeView {
             }
         }
     });
-    println!("returned");
 
     return treeview;
 }
