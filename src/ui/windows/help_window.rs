@@ -47,7 +47,7 @@ pub fn build_ui() {
     help_box.pack_start(&help_text, false, false, 0);
 
     window.set_child(Some(&help_box));
-    window.show_all();
 
+    window.show_all();
     window.present();
 }

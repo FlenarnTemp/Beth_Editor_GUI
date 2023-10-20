@@ -1,16 +1,17 @@
-use gtk::ffi::{GtkMenu, GtkMenuItem, GTK_ICON_SIZE_SMALL_TOOLBAR};
+
 use gtk::{
-    glib, prelude::*, ApplicationWindow, Image, Label, Menu, MenuBar, MenuButton, MenuItem,
-    Popover, PopoverMenu,
+    glib, prelude::*, ApplicationWindow, Image, Label, Menu, MenuButton, MenuItem,
 };
 use gtk::{Application, Button};
 
 use crate::ui::windows::help_window;
 
+use super::object_window;
+
 pub fn build_ui(app: &Application) {
     let window = ApplicationWindow::builder()
         .application(app)
-        .default_height(300)
+        .default_height(600)
         .default_width(500)
         .title("Open-Rust-CK")
         .build();
@@ -22,12 +23,14 @@ pub fn build_ui(app: &Application) {
         .margin_end(1)
         .margin_top(1)
         .margin_bottom(1)
-        .width_request(500) // Min width for the main window
-        .height_request(300) // Min height for the main window
+        .height_request(300)// Min height
+        .width_request(500) // Min width
         .build();
 
     box_container.set_child(Some(&top_toolbar(app)));
     box_container.set_child(Some(&icon_toolbar()));
+
+    object_window::build_ui();
 
     window.set_child(Some(&box_container));
     window.show_all();
@@ -120,11 +123,7 @@ fn top_toolbar(app: &Application) -> gtk::Box {
     toolbar.pack_start(&help_button, false, false, 0);
 
     let link_label = Label::builder().label(" Links").build();
-
-    let link_icon = Image::builder().icon_name("pan-down-symbolic").build();
-
     let link_box = gtk::Box::builder().build();
-    link_box.pack_start(&link_icon, false, false, 0);
     link_box.pack_start(&link_label, false, false, 0);
 
     let links_button = MenuButton::builder()
