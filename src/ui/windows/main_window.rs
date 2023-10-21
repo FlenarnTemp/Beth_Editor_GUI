@@ -23,8 +23,8 @@ pub fn build_ui(app: &Application) {
         .margin_end(1)
         .margin_top(1)
         .margin_bottom(1)
-        .height_request(300)// Min height
-        .width_request(500) // Min width
+        .height_request(300)
+        .width_request(500)
         .build();
 
     box_container.set_child(Some(&top_toolbar(app)));
