@@ -1,10 +1,12 @@
-
-use gtk::{
-    glib, prelude::*, ApplicationWindow, Image, Label, Menu, MenuButton, MenuItem,
-};
+use gtk::{glib, prelude::*, ApplicationWindow, Image, Label, Menu, MenuButton, MenuItem};
 use gtk::{Application, Button};
+use native_dialog::FileDialog;
 
+use crate::buffer::bytebuffer_in as buffer;
+
+use crate::data::core::plugin::Plugin;
 use crate::ui::windows::help_window;
+use crate::{set_loaded_data, GLOBAL_PLUGIN};
 
 use super::object_window;
 
@@ -171,6 +173,47 @@ fn icon_toolbar() -> gtk::Box {
         .image(&data_image)
         .tooltip_text("Load Master/Plugin Files")
         .build();
+
+    data_button.connect_clicked(|_| {
+        let path = FileDialog::new()
+            .set_location("~/Downloads")
+            .add_filter("Bethesda Plugins", &["esp", "esm", "esl"])
+            .show_open_single_file()
+            .unwrap();
+
+        let path = match path {
+            Some(path) => path,
+            None => return,
+        };
+
+        let string_path = path.into_os_string().into_string().unwrap();
+
+        let mut plugin = GLOBAL_PLUGIN.lock().unwrap();
+
+        // Create a new Plugin instance and set it with the loaded data
+        let loaded_plugin = match buffer::ByteBufferIn::load(&string_path) {
+            Ok(mut buffer) => {
+                if let Some(loaded_plugin) = Plugin::read(&mut buffer) {
+                    loaded_plugin
+                } else {
+                    // Handle the case when reading fails
+                    // You may want to log an error or take other actions
+                    return;
+                }
+            }
+            Err(err) => {
+                println!("Failed to load file: {:?}", err);
+                return;
+            }
+        };
+
+        //println!("{:?}", loaded_plugin.groups[30].records.len());
+        println!("{:?}", loaded_plugin.header);
+
+        // Update the global_plugin with the loaded data
+        *plugin = Some(loaded_plugin);
+        set_loaded_data(true);
+    });
 
     let save_image = Image::from_file("./src/ui/icons/save.svg");
     let save_box = gtk::Box::builder().build();

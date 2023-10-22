@@ -10,3 +10,4 @@ gtk = "0.18.1"
 open = "5.0.0"
 flate2 = { version = "1.0.28", features = ["zlib"] }
 lazy_static = "1.4.0"
+native-dialog = "0.6.4"

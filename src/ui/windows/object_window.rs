@@ -1,6 +1,9 @@
+use std::{rc::Rc, cell::RefCell};
+
+use crate::{check_loaded_data, data::core::field::FieldData, GLOBAL_PLUGIN};
 use gtk::{
-    prelude::*, ApplicationWindow, CellRendererText, ScrolledWindow, TreeStore, TreeView,
-    TreeViewColumn, TextView, TextBuffer, TextTag, TextTagTable,
+    glib::Value, prelude::*, ApplicationWindow, CellRendererText, ScrolledWindow, TreeStore,
+    TreeView, TreeViewColumn,
 };
 
 pub fn build_ui() {
@@ -19,33 +22,76 @@ pub fn build_ui() {
         .spacing(1)
         .build();
 
+    let right_scrolled_window = ScrolledWindow::builder()
+        .hscrollbar_policy(gtk::PolicyType::Automatic)
+        .vscrollbar_policy(gtk::PolicyType::Automatic)
+        .min_content_height(400)
+        .min_content_width(200)
+        .build();
+
+    let right_grid = gtk::Grid::builder().build();
+    right_scrolled_window.add(&right_grid);
+
+    let treeview = build_treeview();
+
     let scrolled_window = ScrolledWindow::builder()
         .hscrollbar_policy(gtk::PolicyType::Never)
         .vscrollbar_policy(gtk::PolicyType::Automatic)
         .min_content_height(400)
         .min_content_width(200)
-        .child(&build_treeview())
+        .child(&treeview)
         .build();
 
-    let text_view = TextView::builder().build();
-
-    let text_tag_table = TextTagTable::new();
-    let text_buffer = TextBuffer::new(Some(&text_tag_table));
-    text_view.set_buffer(Some(&text_buffer));
-
     main_box.pack_start(&scrolled_window, false, true, 0);
-    main_box.pack_start(&text_view, true, true, 0);
 
+    let object_window_table = Rc::new(RefCell::new(TreeView::new()));
+
+    treeview.connect_cursor_changed(move |tree_view| {
+        let selection = tree_view.selection();
+        if check_loaded_data() {
+            if let Some(tree_model) = tree_view.model() {
+                if let Some((tree_model, tree_iter)) = selection.selected() {
+                    if let Ok(value) = tree_model.value(&tree_iter, 0).get::<String>() {
+                        if &value == "VoiceType" {
+                            println!("VoiceType selected. Loading data...");
+
+                            right_grid.foreach(|child| {
+                                right_grid.remove(child);
+                            });
+
+                            // Simulate data for VoiceType
+                            let new_object_window_table = create_sortable_table(73);
+                            right_grid.add(&new_object_window_table);
+                            right_grid.show_all();
+
+                            *object_window_table.borrow_mut() = new_object_window_table;
+                        } else {
+                            println!("Clicked: {:?}", value);
+                            right_grid.foreach(|child| {
+                                right_grid.remove(child);
+                            });
+                        }
+                    } else {
+                        println!("Value is not a valid String.");
+                    }
+                }
+            }
+        } else {
+            println!("No data loaded.");
+        }
+    });
+    
+   
+
+
+    main_box.pack_start(&right_scrolled_window, true, true, 0);
     window.set_child(Some(&main_box));
     window.show_all();
     window.present();
 }
 
 fn build_treeview() -> TreeView {
-    let treeview = TreeView::builder()
-    .width_request(200)
-    
-    .build();
+    let treeview = TreeView::builder().width_request(200).build();
 
     let treestore = TreeStore::new(&[String::static_type()]);
     treeview.set_model(Some(&treestore));
@@ -301,7 +347,7 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&sub_magic_iter6, 0, &"Spell".to_value());
     /*==============================================================================*/
 
-     /*
+    /*
      * Miscellaneous Structure
      * Miscellaneous ->
      *      Actor Value
@@ -309,7 +355,7 @@ fn build_treeview() -> TreeView {
      *      AnimObject -> Record Filters
      *      Art Object -> Record Filters
      *      AttractionRule
-     *      BendableSpline 
+     *      BendableSpline
      *      Collision Layer
      *      ColorForm
      *      CombatStyle
@@ -382,7 +428,11 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&sub_miscellaneous_iter15, 0, &"IdleMarker".to_value());
 
     let sub_miscellaneous_iter16 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter16, 0, &"Instance Naming Rules".to_value());
+    treestore.set_value(
+        &sub_miscellaneous_iter16,
+        0,
+        &"Instance Naming Rules".to_value(),
+    );
 
     let sub_miscellaneous_iter17 = treestore.append(Some(&miscellaneous_iter));
     treestore.set_value(&sub_miscellaneous_iter17, 0, &"Keyword".to_value());
@@ -457,7 +507,7 @@ fn build_treeview() -> TreeView {
 
     let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
     treestore.set_value(&sub_specialeffect_iter1, 0, &"Explosion".to_value());
-    
+
     let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
     treestore.set_value(&sub_specialeffect_iter1, 0, &"Footstep".to_value());
 
@@ -466,7 +516,7 @@ fn build_treeview() -> TreeView {
 
     let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
     treestore.set_value(&sub_specialeffect_iter1, 0, &"GodRays".to_value());
-    
+
     let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
     treestore.set_value(&sub_specialeffect_iter1, 0, &"Hazard".to_value());
 
@@ -474,7 +524,11 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&sub_specialeffect_iter1, 0, &"Imagespace".to_value());
 
     let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Imagespace Modifier".to_value());
+    treestore.set_value(
+        &sub_specialeffect_iter1,
+        0,
+        &"Imagespace Modifier".to_value(),
+    );
 
     let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
     treestore.set_value(&sub_specialeffect_iter1, 0, &"ImpactData".to_value());
@@ -528,7 +582,7 @@ fn build_treeview() -> TreeView {
 
     let sub_worlddata_iter6 = treestore.append(Some(&worlddata_iter));
     treestore.set_value(&sub_worlddata_iter6, 0, &"Shader Particle".to_value());
-    
+
     let sub_worlddata_iter7 = treestore.append(Some(&worlddata_iter));
     treestore.set_value(&sub_worlddata_iter7, 0, &"Visual Effect".to_value());
 
@@ -596,17 +650,56 @@ fn build_treeview() -> TreeView {
     // Default to collapsed state.
     treeview.collapse_all();
 
-    treeview.connect_cursor_changed(|tree_view| {
-        if let selection = tree_view.selection() {
-            if let Some(tree_model) = tree_view.model() {
-                if let Some((tree_model, tree_iter)) = selection.selected() {
-                    if let value = tree_model.value(&tree_iter, 0).get::<String>() {
-                        println!("Clicked: {:?}", value);
+    return treeview;
+}
+
+fn create_sortable_table(group_id: u32) -> TreeView {
+    let treeview = TreeView::new();
+    let treestore = TreeStore::new(&[String::static_type(), String::static_type()]);
+    let edid_column = TreeViewColumn::new();
+    let formid_column = TreeViewColumn::new();
+
+    let cell_renderer = CellRendererText::new();
+
+    treestore.set_sort_column_id(gtk::SortColumn::Index(0), gtk::SortType::Ascending);
+    treeview.set_model(Some(&treestore));
+    treeview.set_headers_visible(true);
+
+    edid_column.set_title("Editor ID");
+    edid_column.set_resizable(true);
+    gtk::prelude::CellLayoutExt::pack_start(&edid_column, &cell_renderer, true);
+    gtk::prelude::CellLayoutExt::add_attribute(&edid_column, &cell_renderer, "text", 0);
+    treeview.append_column(&edid_column);
+
+    formid_column.set_title("FormID");
+    formid_column.set_resizable(true);
+    gtk::prelude::CellLayoutExt::pack_start(&formid_column, &cell_renderer, true);
+    gtk::prelude::CellLayoutExt::add_attribute(&formid_column, &cell_renderer, "text", 1);
+    treeview.append_column(&formid_column);
+
+    let plugin_mutex = GLOBAL_PLUGIN.lock().unwrap();
+
+    if let Some(plugin) = &*plugin_mutex {
+        let group_records = &plugin.groups[group_id as usize].records;
+
+        for record in group_records {
+            let row = treestore.append(None);
+            if let Some(field_data) = &record.fields[0].data {
+                let edid_value = match field_data {
+                    FieldData::StringData(s) => Value::from(&s.trim_end_matches('\0')),
+                    _ => {
+                        // Handle other variants of FieldData here if needed
+                        Value::from(&String::from("Default Value"))
                     }
-                }
+                };
+                treestore.set_value(&row, 0, &edid_value);
+                treestore.set_value(&row, 1, &record.id.to_value());
+                println!("{:?}", record.fields[1].data)
             }
         }
-    });
 
-    return treeview;
+        gtk::main_iteration();
+
+    }
+    treeview
 }

@@ -24,9 +24,9 @@ pub enum LabelType {
 }
 
 impl Group {
-    pub fn read(buffer: &mut buffer::ByteBufferIn) -> Option<Self> {
+    pub fn read(buffer: &mut buffer::ByteBufferIn, mut class_type: String) -> Option<Self> {
         let mut group = Group {
-            type_: buffer.read_string(4),
+            type_: class_type,
             data_len: buffer.read_dword() - 24, // 'data_len' includes header length.
             label: LabelType::BinaryData(buffer.read_bytes(4)),
             group_type: buffer.read_dword(),
@@ -37,44 +37,39 @@ impl Group {
             records: Vec::new(),
         };
 
-        match group.group_type {
-            0 => { /* Top (Type) */
-                if let LabelType::BinaryData(binary_data) = &group.label {
+
+        if let LabelType::BinaryData(binary_data) = &group.label {
+            match group.group_type {
+                0 => { /* Top (Type) */
                     let decoded_string = String::from_utf8_lossy(binary_data).to_string();
                     group.label = LabelType::StringValue(decoded_string);
                 }
-            }
-
-            2 /* Interior Block Number */ | 3 /* Interior Sub-block Number */ => {
-                if let LabelType::BinaryData(binary_data) = &group.label {
+    
+                2 /* Interior Block Number */ | 3 /* Interior Sub-block Number */ => {
                     group.label = LabelType::ByteData(binary_data[0]);
                 }
-            },
-
-            4 /* Exterior Cell Block */ | 5 /* Exterior Cell Sub-block */ => {
-                if let LabelType::BinaryData(binary_data) = &group.label {
+    
+                4 /* Exterior Cell Block */ | 5 /* Exterior Cell Sub-block */ => {
                     let mut temp_buffer = buffer::ByteBufferIn::new(binary_data.to_vec());
                     group.label = LabelType::Coordinates { y: temp_buffer.read_word(), x: temp_buffer.read_word() }
                 }
-            }
-
-            1 /* World Children (Parent - WRLD) */              |
-            6 /* Cell Children (Parent - CELL) */               |
-            7 /* Topic Children (Parent - DIAL) */              |
-            8 /* Cell Persistent Children (Parent - Cell) */    |
-            9 /* Cell Temporary Children (Parent - Cell) */     =>
-            {
-                if let LabelType::BinaryData(binary_data) = &group.label {
+    
+                1 /* World Children (Parent - WRLD) */              |
+                6 /* Cell Children (Parent - CELL) */               |
+                7 /* Topic Children (Parent - DIAL) */              |
+                8 /* Cell Persistent Children (Parent - Cell) */    |
+                9 /* Cell Temporary Children (Parent - Cell) */     =>
+                {
                     let mut temp_buffer = buffer::ByteBufferIn::new(binary_data.to_vec());
                     group.label = LabelType::StringValue(format!("{:x}", temp_buffer.read_dword()))
                 }
-            }
-            _ => {
-                // TODO: We should never end up here.
+                _ => {
+                    // TODO: We should never end up here.
+                }
             }
         }
 
-        println!("Processing: {:?}, {:?}, {:?}", group.group_type, group.type_, group.label);
+        //println!("Processing: {:?}, {:?}, {:?}", group.group_type, group.type_, group.label);
 
         let mut data = buffer::ByteBufferIn {
             data: buffer.data[buffer.offset..(buffer.offset + group.data_len as usize)].to_vec(),
@@ -87,14 +82,18 @@ impl Group {
                 // FIXME: Disabled for now.
             } else {
                 while data.available() > 0 {
-                    if let Some(record) = record::Record::read_default(&mut data) {
+                    class_type = data.read_string(4);
+
+                    if let Some(record) = record::Record::read_default(&mut data, class_type) {
                         group.records.push(record);
                     }
                 }
             }
         } else {
             while data.available() > 0 {
-                if let Some(record) = record::Record::read_default(&mut data) {
+                class_type = data.read_string(4);
+
+                if let Some(record) = record::Record::read_default(&mut data, class_type) {
                     group.records.push(record);
                 }
             }

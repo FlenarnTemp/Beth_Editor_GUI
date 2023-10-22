@@ -7,9 +7,11 @@ pub enum FieldData {
     FieldsData(Vec<Field>),
     FloatData(f32),
     ByteData(u8),
-    IntData32(u32),
     IntData16(u16),
-    FormIDData(u32),
+    IntData32(u32),
+    IntData64(u64),
+    FormIDData(String),
+    FlagsData(Vec<bool>)
 }
 
 #[derive(Debug)]
@@ -59,7 +61,7 @@ impl Field {
 
     pub fn read_z_string_field(mut self, buffer: &mut buffer::ByteBufferIn) -> Self {
         self.data = Some(FieldData::StringData(
-            buffer.read_string(self.data_len as isize),
+            buffer.read_string(self.data_len as isize).trim_end_matches('\0').to_owned(),
         ));
         self
     }
@@ -78,6 +80,11 @@ impl Field {
 
     pub fn read_int32_field(mut self, buffer: &mut buffer::ByteBufferIn) -> Option<Self> {
         self.data = Some(FieldData::IntData32(buffer.read_dword()));
+        Some(self)
+    }
+
+    pub fn read_int64_field(mut self, buffer: &mut buffer::ByteBufferIn) -> Option<Self> {
+        self.data = Some(FieldData::IntData64(buffer.read_qword()));
         Some(self)
     }
 }
