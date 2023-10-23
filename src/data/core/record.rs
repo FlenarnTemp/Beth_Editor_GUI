@@ -132,7 +132,9 @@ fn initialize_type_to_reader() -> HashMap<String, FieldReaderFN> {
         HashMap::new(),
         "TES4" => tes4::read_tes4,
         "GMST" => gmst::read_gmst,
-        "VTYP" => vtyp::read_vtyp
+        "VTYP" => vtyp::read_vtyp,
+        "CLFM" => clfm::read_clfm,
+        "IPDS" => ipds::read_ipds
     );
 
     label_to_record_reader

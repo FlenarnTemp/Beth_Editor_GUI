@@ -1,8 +1,8 @@
 use crate::data::core::field::Field;
 use crate::buffer::bytebuffer_in as buffer;
 
-// Reference:: https://en.uesp.net/wiki/Skyrim_Mod:Mod_File_Format/XXXX
-pub fn read_xxxx(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
+// Reference:: https://en.uesp.net/wiki/Skyrim_Mod:Mod_File_Format/CLFM
+pub fn read_clfm(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
     let mut temp_fields = Vec::new();
 
     while buffer.available() > 0 {
@@ -12,9 +12,17 @@ pub fn read_xxxx(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
             "EDID" => {
                 temp_fields.push(field.read_z_string_field(buffer));
             }
+
+            "CNAM" => {
+                temp_fields.push(field.read_binary_field(buffer));
+            }
+
+            "FNAM" => {
+                temp_fields.push(field.read_bool_field(buffer));
+            }
            
             _ => {
-                println!("Missing type: {} in XXXX parsing.", field.type_);
+                println!("Missing type: {} in CLFM parsing.", field.type_);
                 temp_fields.push(field.read_binary_field(buffer));
             }
         }

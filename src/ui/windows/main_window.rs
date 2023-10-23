@@ -208,7 +208,7 @@ fn icon_toolbar() -> gtk::Box {
         };
 
         //println!("{:?}", loaded_plugin.groups[30].records.len());
-        println!("{:?}", loaded_plugin.header);
+        //println!("{:?}", loaded_plugin);
 
         // Update the global_plugin with the loaded data
         *plugin = Some(loaded_plugin);
