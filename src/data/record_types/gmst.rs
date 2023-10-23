@@ -18,6 +18,7 @@ pub fn read_gmst(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
 
                     // TODO: Missing several types, not used in Fallout4.esm, but checked for in code:
                     // c(char), h(char), r(RGB), a(RGBA)
+                    // Reference: https://en.uesp.net/wiki/Skyrim_Mod:Mod_File_Format/Typed_Value_Field
                     // FIXME: 's' & 'S' currently reads z_strings, should read l_strings.
                     if c == 's' || c == 'S' { 
                         temp_fields.push(field.read_z_string_field(buffer))
