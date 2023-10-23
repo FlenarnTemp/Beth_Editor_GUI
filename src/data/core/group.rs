@@ -27,12 +27,12 @@ impl Group {
     pub fn read(buffer: &mut buffer::ByteBufferIn, mut class_type: String) -> Option<Self> {
         let mut group = Group {
             type_: class_type,
-            data_len: buffer.read_dword() - 24, // 'data_len' includes header length.
-            label: LabelType::BinaryData(buffer.read_bytes(4)),
-            group_type: buffer.read_dword(),
-            timestamp: buffer.read_word(),
-            vc: buffer.read_word(),
-            unk1: buffer.read_dword(),
+            data_len: buffer.read_u32() - 24, // 'data_len' includes header length.
+            label: LabelType::BinaryData(buffer.read_u8_vec(4)),
+            group_type: buffer.read_u32(),
+            timestamp: buffer.read_u16(),
+            vc: buffer.read_u16(),
+            unk1: buffer.read_u32(),
             subgroups: Vec::new(),
             records: Vec::new(),
         };
@@ -51,7 +51,7 @@ impl Group {
     
                 4 /* Exterior Cell Block */ | 5 /* Exterior Cell Sub-block */ => {
                     let mut temp_buffer = buffer::ByteBufferIn::new(binary_data.to_vec());
-                    group.label = LabelType::Coordinates { y: temp_buffer.read_word(), x: temp_buffer.read_word() }
+                    group.label = LabelType::Coordinates { y: temp_buffer.read_u16(), x: temp_buffer.read_u16() }
                 }
     
                 1 /* World Children (Parent - WRLD) */              |
@@ -61,7 +61,7 @@ impl Group {
                 9 /* Cell Temporary Children (Parent - Cell) */     =>
                 {
                     let mut temp_buffer = buffer::ByteBufferIn::new(binary_data.to_vec());
-                    group.label = LabelType::StringValue(format!("{:x}", temp_buffer.read_dword()))
+                    group.label = LabelType::StringValue(format!("{:x}", temp_buffer.read_u32()))
                 }
                 _ => {
                     // TODO: We should never end up here.

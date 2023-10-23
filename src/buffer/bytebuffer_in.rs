@@ -36,7 +36,7 @@ impl ByteBufferIn {
         Ok(())
     }
 
-    pub fn read_byte(&mut self) -> u8 {
+    pub fn read_u8(&mut self) -> u8 {
         if self.available() > 0 {
             let byte = self.data[self.offset];
             self.offset += 1;
@@ -46,7 +46,7 @@ impl ByteBufferIn {
         }
     }
 
-    pub fn read_bytes(&mut self, len: usize) -> Vec<u8> {
+    pub fn read_u8_vec(&mut self, len: usize) -> Vec<u8> {
         let start = self.offset;
         let end = self.offset + len;
         
@@ -61,26 +61,26 @@ impl ByteBufferIn {
         }
     }
 
-    pub fn read_word(&mut self) -> u16 {
-        let low = self.read_byte() as u16;
-        let high = self.read_byte() as u16;
+    pub fn read_u16(&mut self) -> u16 {
+        let low = self.read_u8() as u16;
+        let high = self.read_u8() as u16;
         low | (high << 8)
     }
 
-    pub fn read_dword(&mut self) -> u32 {
-        let low = self.read_word() as u32;
-        let high = self.read_word() as u32;
+    pub fn read_u32(&mut self) -> u32 {
+        let low = self.read_u16() as u32;
+        let high = self.read_u16() as u32;
         low | (high << 16)
     }
 
-    pub fn read_qword(&mut self) -> u64 {
-        let low = self.read_dword() as u64;
-        let high = self.read_dword() as u64;
+    pub fn read_u64(&mut self) -> u64 {
+        let low = self.read_u32() as u64;
+        let high = self.read_u32() as u64;
         low | (high << 32)
     }
 
     pub fn read_float(&mut self) -> f32 {
-        let dword = self.read_dword() as u32;
+        let dword = self.read_u32() as u32;
         let float = f32::from_bits(dword);
         float
     }
@@ -88,7 +88,7 @@ impl ByteBufferIn {
     pub fn read_string(&mut self, len: isize) -> String {
         let mut result = String::new();
         if len < 0 {
-            while let byte = self.read_byte() {
+            while let byte = self.read_u8() {
                 if byte == 0 {
                     break;
                 }
@@ -96,7 +96,7 @@ impl ByteBufferIn {
             }
         } else {
             for _ in 0..len {
-                if let byte = self.read_byte() {
+                if let byte = self.read_u8() {
                     result.push(byte as char);
                 } else {
                     break;

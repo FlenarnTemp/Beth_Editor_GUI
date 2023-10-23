@@ -6,39 +6,38 @@ pub fn read_tes4(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
     let mut temp_fields = Vec::new();
 
     while buffer.available() > 0 {
-        let mut field = Field::read_common(buffer).unwrap();
+        let mut field = Field::read_common(buffer);
 
         match field.type_.as_str() {
             "HEDR" => {
                 let data_fields = vec![
                     ("Version".to_string(), 4, FieldData::FloatData(buffer.read_float())),
-                    ("Number of Records".to_string(), 4, FieldData::IntData32(buffer.read_dword())),
-                    ("Next Object ID".to_string(), 4, FieldData::FormIDData(format!("{:x}", buffer.read_dword()).to_uppercase()))
+                    ("Number of Records".to_string(), 4, FieldData::IntData32(buffer.read_u32())),
+                    ("Next Object ID".to_string(), 4, FieldData::FormIDData(format!("{:x}", buffer.read_u32()).to_uppercase()))
                 ];
                 let data_field = Field::create_generic_field("HEDR", field.data_len, data_fields);
-                temp_fields.push(data_field)
+                temp_fields.push(data_field);
             }
     
             "CNAM" | "MAST" | "SNAM" => {
-                let temp_field = field.read_z_string_field(buffer);
-                temp_fields.push(temp_field)
+                temp_fields.push(field.read_z_string_field(buffer));
             }
 
             "INTV" | "INCC" => {
-                let temp_field = field.read_int32_field(buffer).unwrap();
-                temp_fields.push(temp_field)
+                let temp_field = field.read_u32_field(buffer);
+                temp_fields.push(temp_field);
             }
 
             "DATA" => {
-                let temp_field = field.read_int64_field(buffer).unwrap();
-                temp_fields.push(temp_field)
+                let temp_field = field.read_u64_field(buffer);
+                temp_fields.push(temp_field);
             }
 
             "ONAM" => {
                 let mut data_fields: Vec<String> = Vec::new();
 
                 while buffer.available() > 0 {
-                    data_fields.push(format!("{:x}", buffer.read_dword()).to_uppercase());
+                    data_fields.push(format!("{:x}", buffer.read_u32()).to_uppercase());
                 }
                 field.data = Some(FieldData::FormIDArray(data_fields));
                 temp_fields.push(field);
@@ -46,7 +45,7 @@ pub fn read_tes4(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
 
             _ => {
                 println!("Missing type: {} in TES4 parsing.", field.type_);
-                temp_fields.push(field.read_binary_field(buffer).unwrap())
+                temp_fields.push(field.read_binary_field(buffer));
             }
         }
     }

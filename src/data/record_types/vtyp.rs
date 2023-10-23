@@ -6,16 +6,15 @@ pub fn read_vtyp(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
     let mut temp_fields = Vec::new();
 
     while buffer.available() > 0 {
-        let mut field = Field::read_common(buffer).unwrap();
+        let mut field = Field::read_common(buffer);
 
         match field.type_.as_str() {
             "EDID" => {
-                let temp_field = field.read_z_string_field(buffer);
-                temp_fields.push(temp_field)
+                temp_fields.push(field.read_z_string_field(buffer));
             }
 
             "DNAM" => {
-                let temp_data = buffer.read_byte();
+                let temp_data = buffer.read_u8();
 
                 let mut flags: Vec<bool> = vec![false; 2];
 
@@ -31,7 +30,7 @@ pub fn read_vtyp(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
            
             _ => {
                 println!("Missing type: {} in VTYP parsing.", field.type_);
-                temp_fields.push(field.read_binary_field(buffer).unwrap())
+                temp_fields.push(field.read_binary_field(buffer));
             }
         }
     }

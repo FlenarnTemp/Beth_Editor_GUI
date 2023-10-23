@@ -38,13 +38,13 @@ impl Record {
     pub fn read_common(buffer: &mut buffer::ByteBufferIn, record_type: String) -> Option<RecordAndData> {
         let record = Record {
             type_: record_type,
-            data_len: buffer.read_dword(),
-            flags: buffer.read_dword(),
-            id: format!("{:x}", buffer.read_dword()).to_uppercase(),
-            timestamp: buffer.read_bytes(2),
-            vc1: buffer.read_word(),
-            version: buffer.read_word(),
-            vc2: buffer.read_word(),
+            data_len: buffer.read_u32(),
+            flags: buffer.read_u32(),
+            id: format!("{:x}", buffer.read_u32()).to_uppercase(),
+            timestamp: buffer.read_u8_vec(2),
+            vc1: buffer.read_u16(),
+            version: buffer.read_u16(),
+            vc2: buffer.read_u16(),
             fields: Vec::new(),
             subgroups: Vec::new(),
         };
@@ -59,7 +59,7 @@ impl Record {
         // Handle compressed records.
         // TODO - converted from JavaScript, verify functionality (NPC_ records is a solid reference).
         if (record.flags & FLAG_DEFLATE) != 0 {
-            let decompressed_len = data.read_dword();
+            let decompressed_len = data.read_u32();
             let mut decompressed = Vec::with_capacity(decompressed_len as usize);
             let mut decoder = DeflateDecoder::new(&data.data[data.offset..]);
             decoder.read_exact(&mut decompressed).unwrap();
@@ -101,16 +101,15 @@ fn default_reader(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
     let mut temp_fields = Vec::new();
 
     while buffer.available() > 0 {
-        let field = Field::read_common(buffer).unwrap();
+        let field = Field::read_common(buffer);
 
         match field.type_.as_str() {
             "EDID" => {
-                let temp_field = field.read_z_string_field(buffer);
-                temp_fields.push(temp_field)
+                temp_fields.push(field.read_z_string_field(buffer));
             }
 
             _ => {
-                temp_fields.push(field.read_binary_field(buffer).unwrap())
+                temp_fields.push(field.read_binary_field(buffer));
             }
         }
     }
