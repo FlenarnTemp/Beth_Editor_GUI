@@ -67,10 +67,20 @@ impl ByteBufferIn {
         low | (high << 8)
     }
 
+    pub fn read_i16(&mut self) -> i16 {
+        let value = self.read_u16() as i16;
+        value
+    }
+
     pub fn read_u32(&mut self) -> u32 {
         let low = self.read_u16() as u32;
         let high = self.read_u16() as u32;
         low | (high << 16)
+    }
+
+    pub fn read_i32(&mut self) -> i32 {
+        let value = self.read_u32() as i32;
+        value
     }
 
     pub fn read_u64(&mut self) -> u64 {
