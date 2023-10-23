@@ -11,6 +11,7 @@ pub enum FieldData {
     IntData32(u32),
     IntData64(u64),
     FormIDData(String),
+    FormIDArray(Vec<String>),
     FlagsData(Vec<bool>)
 }
 

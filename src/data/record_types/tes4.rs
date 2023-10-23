@@ -1,4 +1,3 @@
-use std::hash::BuildHasher;
 
 use crate::{buffer::bytebuffer_in as buffer, data::core::field::{Field, FieldData}};
 
@@ -7,7 +6,7 @@ pub fn read_tes4(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
     let mut temp_fields = Vec::new();
 
     while buffer.available() > 0 {
-        let field = Field::read_common(buffer).unwrap();
+        let mut field = Field::read_common(buffer).unwrap();
 
         match field.type_.as_str() {
             "HEDR" => {
@@ -36,13 +35,13 @@ pub fn read_tes4(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
             }
 
             "ONAM" => {
-                let mut data_fields: Vec<FieldData> = Vec::new();
+                let mut data_fields: Vec<String> = Vec::new();
 
                 while buffer.available() > 0 {
-                    data_fields.push(FieldData::FormIDData(format!("{:x}", buffer.read_dword()).to_uppercase()));
+                    data_fields.push(format!("{:x}", buffer.read_dword()).to_uppercase());
                 }
-                let data_field = Field::create_generic_field("ONAM", field.data_len, data_fields);
-                temp_fields.push(data_field)
+                field.data = Some(FieldData::FormIDArray(data_fields));
+                temp_fields.push(field);
             }
 
             _ => {
