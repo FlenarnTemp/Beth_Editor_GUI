@@ -47,12 +47,7 @@ fn top_toolbar(app: &Application) -> gtk::Box {
         .vexpand(false)
         .build();
 
-    let file_button = Button::builder()
-        .label("File")
-        .hexpand(false)
-        .vexpand(false)
-        .relief(gtk::ReliefStyle::None)
-        .build();
+    let file_button = create_file_button(app);
     toolbar.pack_start(&file_button, false, false, 0);
 
     let edit_button = Button::builder()
@@ -111,46 +106,11 @@ fn top_toolbar(app: &Application) -> gtk::Box {
         .build();
     toolbar.pack_start(&gameplay_button, false, false, 0);
 
-    let help_button = Button::builder()
-        .label("Help")
-        .hexpand(false)
-        .vexpand(false)
-        .relief(gtk::ReliefStyle::None)
-        .build();
-
-    help_button.connect_clicked(glib::clone!(@weak app => move |_| {
-        help_window::build_ui();
-    }));
+    let help_button = create_help_button(app);
 
     toolbar.pack_start(&help_button, false, false, 0);
 
-    let link_label = Label::builder().label(" Links").build();
-    let link_box = gtk::Box::builder().build();
-    link_box.pack_start(&link_label, false, false, 0);
-
-    let links_button = MenuButton::builder()
-        .relief(gtk::ReliefStyle::None)
-        .child(&link_box)
-        .build();
-
-    let links_menu = Menu::builder().build();
-
-    let creation_kit_wiki = MenuItem::builder().label("Creation Kit Wiki").build();
-    creation_kit_wiki.connect_activate(glib::clone!(@weak app => move |_| {
-        let _ = open::that("https://www.creationkit.com/fallout4/index.php?title=Main_Page");
-    }));
-
-    let fallout_cascadia_wiki = MenuItem::builder().label("Fallout Cascadia Wiki").build();
-    fallout_cascadia_wiki.connect_activate(glib::clone!(@weak app => move |_| {
-        let _ = open::that("https://docs.falloutcascadia.com");
-    }));
-
-    links_menu.append(&creation_kit_wiki);
-    links_menu.append(&fallout_cascadia_wiki);
-    links_menu.show_all();
-
-    links_button.set_popup(Some(&links_menu));
-
+    let links_button = create_links_button(app);
     toolbar.pack_start(&links_button, false, false, 0);
 
     return toolbar;
@@ -230,4 +190,76 @@ fn icon_toolbar() -> gtk::Box {
     toolbar.pack_start(&save_button, false, false, 0);
 
     return toolbar;
+}
+
+fn create_help_button(app: &Application) -> Button {
+    let help_button = Button::builder()
+        .label("Help")
+        .hexpand(false)
+        .vexpand(false)
+        .relief(gtk::ReliefStyle::None)
+        .build();
+
+    help_button.connect_clicked(glib::clone!(@weak app => move |_| {
+        help_window::build_ui();
+    }));
+
+    help_button
+}
+
+fn create_links_button(app: &Application) -> gtk::MenuButton {
+    let link_label = Label::builder().label("Links").build();
+    let link_box = gtk::Box::builder().build();
+    link_box.pack_start(&link_label, false, false, 0);
+
+    let links_button = MenuButton::builder()
+        .relief(gtk::ReliefStyle::None)
+        .child(&link_box)
+        .build();
+
+    let links_menu = Menu::builder().build();
+
+    let creation_kit_wiki = MenuItem::builder().label("Creation Kit Wiki").build();
+    creation_kit_wiki.connect_activate(glib::clone!(@weak app => move |_| {
+        let _ = open::that("https://www.creationkit.com/fallout4/index.php?title=Main_Page");
+    }));
+
+    let fallout_cascadia_wiki = MenuItem::builder().label("Fallout Cascadia Wiki").build();
+    fallout_cascadia_wiki.connect_activate(glib::clone!(@weak app => move |_| {
+        let _ = open::that("https://docs.falloutcascadia.com");
+    }));
+
+    links_menu.append(&creation_kit_wiki);
+    links_menu.append(&fallout_cascadia_wiki);
+    links_menu.show_all();
+
+    links_button.set_popup(Some(&links_menu));
+
+    links_button
+}
+
+fn create_file_button(app: &Application) -> gtk::MenuButton {
+    let file_label = Label::builder().label("File").build();
+    let file_box = gtk::Box::builder().build();
+    file_box.pack_start(&file_label, false, false, 0);
+
+    let file_button = MenuButton::builder()
+        .relief(gtk::ReliefStyle::None)
+        .child(&file_box)
+        .build();
+
+    let file_menu = Menu::builder().build();
+
+    let data = MenuItem::builder().label("Data...").build();
+
+    let exit = MenuItem::builder().label("Exit").build();
+
+    file_menu.append(&data);
+    file_menu.append(&exit);
+
+    file_menu.show_all();
+
+    file_button.set_popup(Some(&file_menu));
+
+    file_button
 }
