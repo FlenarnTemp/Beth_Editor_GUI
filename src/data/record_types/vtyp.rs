@@ -18,10 +18,10 @@ pub fn read_vtyp(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
 
                 let mut flags: Vec<bool> = vec![false; 2];
 
-                let allow_default = 0x01;
+                let allow_default_dialogue = 0x01;
                 let female = 0x02;
 
-                flags[0] = (temp_data & allow_default) != 0;
+                flags[0] = (temp_data & allow_default_dialogue) != 0;
                 flags[1] = (temp_data & female) != 0;
 
                 field.data = Some(FieldData::FlagsData(flags));
