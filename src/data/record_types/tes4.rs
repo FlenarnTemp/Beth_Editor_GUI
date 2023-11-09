@@ -44,7 +44,7 @@ pub fn read_tes4(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
             }
 
             _ => {
-                println!("Missing type: {} in TES4 parsing.", field.type_);
+                println!("Missing type: {} in TES4 parsing, size: {:?}.", field.type_, field.data_len);
                 temp_fields.push(field.read_binary_field(buffer));
             }
         }

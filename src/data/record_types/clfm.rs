@@ -13,16 +13,10 @@ pub fn read_clfm(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
                 temp_fields.push(field.read_z_string_field(buffer));
             }
 
-            "CNAM" => {
-                temp_fields.push(field.read_binary_field(buffer));
-            }
-
-            "FNAM" => {
-                temp_fields.push(field.read_bool_field(buffer));
-            }
+            
            
             _ => {
-                println!("Missing type: {} in CLFM parsing.", field.type_);
+                println!("Missing type: {} in CLFM parsing, size: {:?}.", field.type_, field.data_len);
                 temp_fields.push(field.read_binary_field(buffer));
             }
         }

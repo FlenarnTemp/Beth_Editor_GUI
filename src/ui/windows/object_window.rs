@@ -80,9 +80,6 @@ pub fn build_ui() {
             println!("No data loaded.");
         }
     });
-    
-   
-
 
     main_box.pack_start(&right_scrolled_window, true, true, 0);
     window.set_child(Some(&main_box));

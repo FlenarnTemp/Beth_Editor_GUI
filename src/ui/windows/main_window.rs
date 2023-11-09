@@ -157,7 +157,6 @@ fn icon_toolbar() -> gtk::Box {
                     loaded_plugin
                 } else {
                     // Handle the case when reading fails
-                    // You may want to log an error or take other actions
                     return;
                 }
             }
@@ -166,9 +165,6 @@ fn icon_toolbar() -> gtk::Box {
                 return;
             }
         };
-
-        //println!("{:?}", loaded_plugin.groups[30].records.len());
-        //println!("{:?}", loaded_plugin);
 
         // Update the global_plugin with the loaded data
         *plugin = Some(loaded_plugin);
@@ -252,7 +248,48 @@ fn create_file_button(app: &Application) -> gtk::MenuButton {
 
     let data = MenuItem::builder().label("Data...").build();
 
+    data.connect_activate(|_| {
+        let path = FileDialog::new()
+            .set_location("~/Downloads")
+            .add_filter("Bethesda Plugins", &["esp", "esm", "esl"])
+            .show_open_single_file()
+            .unwrap();
+
+        let path = match path {
+            Some(path) => path,
+            None => return,
+        };
+
+        let string_path = path.into_os_string().into_string().unwrap();
+
+        let mut plugin = GLOBAL_PLUGIN.lock().unwrap();
+
+        // Create a new Plugin instance and set it with the loaded data
+        let loaded_plugin = match buffer::ByteBufferIn::load(&string_path) {
+            Ok(mut buffer) => {
+                if let Some(loaded_plugin) = Plugin::read(&mut buffer) {
+                    loaded_plugin
+                } else {
+                    // Handle the case when reading fails
+                    return;
+                }
+            }
+            Err(err) => {
+                println!("Failed to load file: {:?}", err);
+                return;
+            }
+        };
+
+        // Update the global_plugin with the loaded data
+        *plugin = Some(loaded_plugin);
+        set_loaded_data(true);
+    });
+
     let exit = MenuItem::builder().label("Exit").build();
+    exit.connect_activate(|_| {
+        // TODO - check for unsaved edits.
+        let _ = std::process::exit(0);
+    });
 
     file_menu.append(&data);
     file_menu.append(&exit);
