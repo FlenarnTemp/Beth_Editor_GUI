@@ -14,7 +14,8 @@ pub enum FieldData {
     IntData64(u64),
     FormIDData(String),
     FormIDArray(Vec<String>),
-    FlagsData(Vec<bool>)
+    FlagsData(Vec<bool>),
+    RGBAData(Vec<u8>)
 }
 
 #[derive(Debug)]
@@ -60,6 +61,17 @@ impl Field {
                     .collect(),
             )),
         }
+    }
+
+    pub fn read_rgba_field(mut self, buffer: &mut buffer::ByteBufferIn) -> Self {
+        let mut rgba: Vec<u8> = vec![0; 4];
+        rgba[0] = buffer.read_u8(); // Red
+        rgba[1] = buffer.read_u8(); // Green
+        rgba[2] = buffer.read_u8(); // Blue
+        rgba[3] = buffer.read_u8(); // Alpha
+
+        self.data = Some(FieldData::RGBAData(rgba));
+        self
     }
 
     pub fn read_z_string_field(mut self, buffer: &mut buffer::ByteBufferIn) -> Self {
