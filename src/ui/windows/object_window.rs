@@ -1,6 +1,6 @@
-use std::{rc::Rc, cell::RefCell};
+use std::{cell::RefCell, rc::Rc};
 
-use crate::{check_loaded_data, data::core::field::FieldData, GLOBAL_PLUGIN};
+use crate::{check_loaded_data, data::{core::field::FieldData, self}, GLOBAL_PLUGIN};
 use gtk::{
     glib::Value, prelude::*, ApplicationWindow, CellRendererText, ScrolledWindow, TreeStore,
     TreeView, TreeViewColumn,
@@ -49,27 +49,35 @@ pub fn build_ui() {
     treeview.connect_cursor_changed(move |tree_view| {
         let selection = tree_view.selection();
         if check_loaded_data() {
-            if let Some(tree_model) = tree_view.model() {
+            if let Some(_tree_model) = tree_view.model() {
                 if let Some((tree_model, tree_iter)) = selection.selected() {
                     if let Ok(value) = tree_model.value(&tree_iter, 0).get::<String>() {
-                        if &value == "VoiceType" {
-                            println!("VoiceType selected. Loading data...");
+                        let mut data_id = 0;
 
-                            right_grid.foreach(|child| {
-                                right_grid.remove(child);
-                            });
+                        right_grid.foreach(|child| {
+                            right_grid.remove(child);
+                        });
 
-                            // Simulate data for VoiceType
-                            let new_object_window_table = create_sortable_table(73);
+                        match value.as_str() {
+                            "VoiceType" => {
+                                data_id = 73;
+                            }
+
+                            "Color Form" => {
+                                data_id = 101;
+                            }
+
+                            _ => {
+                                println!("Clicked: {:?}", value);
+                            }
+                        }
+
+                        if data_id > 0 {
+                            let new_object_window_table = create_sortable_table(data_id);
                             right_grid.add(&new_object_window_table);
                             right_grid.show_all();
 
                             *object_window_table.borrow_mut() = new_object_window_table;
-                        } else {
-                            println!("Clicked: {:?}", value);
-                            right_grid.foreach(|child| {
-                                right_grid.remove(child);
-                            });
                         }
                     } else {
                         println!("Value is not a valid String.");
@@ -696,7 +704,6 @@ fn create_sortable_table(group_id: u32) -> TreeView {
         }
 
         gtk::main_iteration();
-
     }
     treeview
 }
