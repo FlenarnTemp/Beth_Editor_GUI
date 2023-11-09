@@ -14,7 +14,7 @@ pub fn read_xxxx(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
             }
            
             _ => {
-                println!("Missing type: {} in XXXX parsing.", field.type_);
+                println!("Missing type: {} in XXXX parsing, size: {:?}.", field.type_, field.data_len);
                 temp_fields.push(field.read_binary_field(buffer));
             }
         }
