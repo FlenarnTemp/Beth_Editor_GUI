@@ -67,6 +67,10 @@ pub fn build_ui() {
                                 data_id = 101;
                             }
 
+                            "ImpactDataSet" => {
+                                data_id = 76;
+                            }
+
                             _ => {
                                 println!("Clicked: {:?}", value);
                             }
@@ -699,7 +703,7 @@ fn create_sortable_table(group_id: u32) -> TreeView {
                 };
                 treestore.set_value(&row, 0, &edid_value);
                 treestore.set_value(&row, 1, &record.id.to_value());
-                println!("{:?}", record.fields[1].data)
+                println!("{:?}", record.fields[0].data)
             }
         }
 
