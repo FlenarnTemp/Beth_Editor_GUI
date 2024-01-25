@@ -78,6 +78,8 @@ pub fn build_ui() {
 
                         if data_id > 0 {
                             let new_object_window_table = create_sortable_table(data_id);
+                            new_object_window_table.set_vexpand(true);
+                            new_object_window_table.set_hexpand(true);
                             right_grid.add(&new_object_window_table);
                             right_grid.show_all();
 
