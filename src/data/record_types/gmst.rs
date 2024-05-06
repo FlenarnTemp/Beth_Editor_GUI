@@ -30,7 +30,7 @@ pub fn read_gmst(buffer: &mut buffer::ByteBufferIn) -> Vec<Field> {
                         temp_fields.push(field.read_float_field(buffer));
                     } else {
                         let temp_field = field.read_binary_field(buffer);
-                        println!("Missing GMST typep value: {}, data: {:?}", c, temp_field.data);
+                        println!("Missing GMST type value: {}, data: {:?}", c, temp_field.data);
                         temp_fields.push(temp_field);
                     }
                 }
