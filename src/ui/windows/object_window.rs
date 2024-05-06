@@ -129,25 +129,14 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&actor_iter, 0, &"Actors".to_value());
 
     /* Sub-levels */
-
-    let sub_actor_iter1 = treestore.append(Some(&actor_iter));
-    treestore.set_value(&sub_actor_iter1, 0, &"Actors".to_value());
-
-    let sub_actor_iter2 = treestore.append(Some(&actor_iter));
-    treestore.set_value(&sub_actor_iter2, 0, &"Actor Action".to_value());
-
-    let sub_actor_iter3 = treestore.append(Some(&actor_iter));
-    treestore.set_value(&sub_actor_iter3, 0, &"BodyPartData".to_value());
-
-    let sub_actor_iter4 = treestore.append(Some(&actor_iter));
-    treestore.set_value(&sub_actor_iter4, 0, &"LeveledCharacter".to_value());
-
-    let sub_actor_iter5 = treestore.append(Some(&actor_iter));
-    treestore.set_value(&sub_actor_iter5, 0, &"Perk".to_value());
-
-    let sub_actor_iter6 = treestore.append(Some(&actor_iter));
-    treestore.set_value(&sub_actor_iter6, 0, &"TalkingActivator".to_value());
-    /*==============================================================================*/
+    let actor_item_names = [
+        "Actors", "Actor Action", "BodyPartData", "LeveledCharacter", "Perk", "TalkingActivator"
+    ];
+    
+    for &item_name in &actor_item_names {
+        let sub_actor_iter = treestore.append(Some(&actor_iter));
+        treestore.set_value(&sub_actor_iter, 0, &item_name.to_value());
+    }    
 
     /*
      * Audio Structure
@@ -169,40 +158,16 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&audio_iter, 0, &"Audio".to_value());
 
     /* Sub-levels */
-
-    let sub_audio_iter1 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter1, 0, &"Acoustic Space".to_value());
-
-    let sub_audio_iter2 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter2, 0, &"Animation Tag Set".to_value());
-
-    let sub_audio_iter3 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter3, 0, &"Category Snapshot".to_value());
-
-    let sub_audio_iter4 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter4, 0, &"Effect Chain".to_value());
-
-    let sub_audio_iter5 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter5, 0, &"Music Track".to_value());
-
-    let sub_audio_iter6 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter6, 0, &"Music Type".to_value());
-
-    let sub_audio_iter7 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter7, 0, &"Reverb Parameters".to_value());
-
-    let sub_audio_iter8 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter8, 0, &"Sound Category".to_value());
-
-    let sub_audio_iter9 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter9, 0, &"Sound Descriptor".to_value());
-
-    let sub_audio_iter10 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter10, 0, &"Sound Marker".to_value());
-
-    let sub_audio_iter11 = treestore.append(Some(&audio_iter));
-    treestore.set_value(&sub_audio_iter11, 0, &"Sound Output Model".to_value());
-    /*==============================================================================*/
+    let audio_item_names = [
+        "Acoustic Space", "Animation Tag Set", "Category Snapshot", "Effect Chain", 
+        "Music Track", "Music Type", "Reverb Parameters", "Sound Category", 
+        "Sound Descriptor", "Sound Marker", "Sound Output Model"
+    ];
+    
+    for &item_name in &audio_item_names {
+        let sub_audio_iter = treestore.append(Some(&audio_iter));
+        treestore.set_value(&sub_audio_iter, 0, &item_name.to_value());
+    }    
 
     /*
      * Character Structure
@@ -224,43 +189,15 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&character_iter, 0, &"Character".to_value());
 
     /* Sub-levels */
-
-    let sub_character_iter1 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter1, 0, &"Association Type".to_value());
-
-    let sub_character_iter2 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter2, 0, &"Class".to_value());
-
-    let sub_character_iter3 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter3, 0, &"Equip Slot".to_value());
-
-    let sub_character_iter4 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter4, 0, &"Faction".to_value());
-
-    let sub_character_iter5 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter5, 0, &"HeadPart".to_value());
-
-    let sub_character_iter6 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter6, 0, &"MovementType".to_value());
-
-    let sub_character_iter7 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter7, 0, &"Package".to_value());
-
-    let sub_character_iter8 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter8, 0, &"Quest".to_value());
-
-    let sub_character_iter9 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter9, 0, &"Race".to_value());
-
-    let sub_character_iter10 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter10, 0, &"Relationship".to_value());
-
-    let sub_character_iter11 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter11, 0, &"SM Event Node".to_value());
-
-    let sub_character_iter12 = treestore.append(Some(&character_iter));
-    treestore.set_value(&sub_character_iter12, 0, &"VoiceType".to_value());
-    /*==============================================================================*/
+    let character_item_names = [
+        "Association Type", "Class", "Equip Slot", "Faction", "HeadPart", "MovementType",
+        "Package", "Quest", "Race", "Relationship", "SM Event Node", "VoiceType"
+    ];
+    
+    for &item_name in &character_item_names {
+        let sub_character_iter = treestore.append(Some(&character_iter));
+        treestore.set_value(&sub_character_iter, 0, &item_name.to_value());
+    }    
 
     /*
      * Items Structure
@@ -283,46 +220,15 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&items_iter, 0, &"Items".to_value());
 
     /* Sub-levels */
+    let item_names = [
+        "Ammo", "Armor", "ArmorAddon", "Books", "Constructible Object", "Holotape", 
+        "Ingredient", "Key", "LeveledItem", "MiscItem", "Object Mod", "Outfit", "Weapon"
+    ];
 
-    let sub_items_iter1 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter1, 0, &"Ammo".to_value());
-
-    let sub_items_iter2 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter2, 0, &"Armor".to_value());
-
-    let sub_items_iter3 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter3, 0, &"ArmorAddon".to_value());
-
-    let sub_items_iter4 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter4, 0, &"Books".to_value());
-
-    let sub_items_iter5 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter5, 0, &"Constructible Object".to_value());
-
-    let sub_items_iter6 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter6, 0, &"Holotape".to_value());
-
-    let sub_items_iter7 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter7, 0, &"Ingredient".to_value());
-
-    let sub_items_iter8 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter8, 0, &"Key".to_value());
-
-    let sub_items_iter9 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter9, 0, &"LeveledItem".to_value());
-
-    let sub_items_iter10 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter10, 0, &"MiscItem".to_value());
-
-    let sub_items_iter11 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter11, 0, &"Object Mod".to_value());
-
-    let sub_items_iter12 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter12, 0, &"Outfit".to_value());
-
-    let sub_items_iter13 = treestore.append(Some(&items_iter));
-    treestore.set_value(&sub_items_iter13, 0, &"Weapon".to_value());
-    /*==============================================================================*/
+    for &item_name in &item_names {
+        let sub_items_iter = treestore.append(Some(&items_iter));
+        treestore.set_value(&sub_items_iter, 0, &item_name.to_value());
+    }
 
     /*
      * Magic Structure
@@ -338,25 +244,14 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&magic_iter, 0, &"Magic".to_value());
 
     /* Sub-levels */
+    let magic_item_names = [
+        "Dual Cast Data", "Enchantment", "LeveledSpell", "Magic Effect", "Potion", "Spell"
+    ];
 
-    let sub_magic_iter1 = treestore.append(Some(&magic_iter));
-    treestore.set_value(&sub_magic_iter1, 0, &"Dual Cast Data".to_value());
-
-    let sub_magic_iter = treestore.append(Some(&magic_iter));
-    treestore.set_value(&sub_magic_iter, 0, &"Enchantment".to_value());
-
-    let sub_magic_iter3 = treestore.append(Some(&magic_iter));
-    treestore.set_value(&sub_magic_iter3, 0, &"LeveledSpell".to_value());
-
-    let sub_magic_iter4 = treestore.append(Some(&magic_iter));
-    treestore.set_value(&sub_magic_iter4, 0, &"Magic Effect".to_value());
-
-    let sub_magic_iter5 = treestore.append(Some(&magic_iter));
-    treestore.set_value(&sub_magic_iter5, 0, &"Potion".to_value());
-
-    let sub_magic_iter6 = treestore.append(Some(&magic_iter));
-    treestore.set_value(&sub_magic_iter6, 0, &"Spell".to_value());
-    /*==============================================================================*/
+    for &item_name in &magic_item_names {
+        let sub_magic_iter = treestore.append(Some(&magic_iter));
+        treestore.set_value(&sub_magic_iter, 0, &item_name.to_value());
+    }
 
     /*
      * Miscellaneous Structure
@@ -393,91 +288,19 @@ fn build_treeview() -> TreeView {
     let miscellaneous_iter = treestore.append(None);
     treestore.set_value(&miscellaneous_iter, 0, &"Miscellaneous".to_value());
 
-    let sub_miscellaneous_iter1 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter1, 0, &"Actor Value".to_value());
+    /* Sub-levels */
+    let miscellaneous_item_names = [
+        "Actor Value", "AimModel", "AnimObject", "Art Object", "AttractionRule", "BendableSpline",
+        "Collision Layer", "Color Form", "CombatStyle", "Component", "Damage Type", "DefaultObject",
+        "FormList", "Global", "IdleMarker", "Instance Naming Rules", "Keyword", "LandTexture",
+        "Layer", "LoadScreen", "Material Object", "Material Swap", "Message", "PackIn",
+        "TextureSet", "Transform", "ZoomData"
+    ];
 
-    let sub_miscellaneous_iter2 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter2, 0, &"AimModel".to_value());
-
-    let sub_miscellaneous_iter3 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter3, 0, &"AnimObject".to_value());
-
-    let sub_miscellaneous_iter4 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter4, 0, &"Art Object".to_value());
-
-    let sub_miscellaneous_iter5 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter5, 0, &"AttractionRule".to_value());
-
-    let sub_miscellaneous_iter6 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter6, 0, &"BendableSpline".to_value());
-
-    let sub_miscellaneous_iter7 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter7, 0, &"Collision Layer".to_value());
-
-    let sub_miscellaneous_iter8 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter8, 0, &"Color Form".to_value());
-
-    let sub_miscellaneous_iter9 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter9, 0, &"CombatStyle".to_value());
-
-    let sub_miscellaneous_iter10 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter10, 0, &"Component".to_value());
-
-    let sub_miscellaneous_iter11 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter11, 0, &"Damage Type".to_value());
-
-    let sub_miscellaneous_iter12 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter12, 0, &"DefaultObject".to_value());
-
-    let sub_miscellaneous_iter13 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter13, 0, &"FormList".to_value());
-
-    let sub_miscellaneous_iter14 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter14, 0, &"Global".to_value());
-
-    let sub_miscellaneous_iter15 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter15, 0, &"IdleMarker".to_value());
-
-    let sub_miscellaneous_iter16 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(
-        &sub_miscellaneous_iter16,
-        0,
-        &"Instance Naming Rules".to_value(),
-    );
-
-    let sub_miscellaneous_iter17 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter17, 0, &"Keyword".to_value());
-
-    let sub_miscellaneous_iter18 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter18, 0, &"LandTexture".to_value());
-
-    let sub_miscellaneous_iter19 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter19, 0, &"Layer".to_value());
-
-    let sub_miscellaneous_iter20 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter20, 0, &"LoadScreen".to_value());
-
-    let sub_miscellaneous_iter21 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter21, 0, &"Material Object".to_value());
-
-    let sub_miscellaneous_iter22 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter22, 0, &"Material Swap".to_value());
-
-    let sub_miscellaneous_iter23 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter23, 0, &"Message".to_value());
-
-    let sub_miscellaneous_iter24 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter24, 0, &"PackIn".to_value());
-
-    let sub_miscellaneous_iter25 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter25, 0, &"TextureSet".to_value());
-
-    let sub_miscellaneous_iter26 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter26, 0, &"Transform".to_value());
-
-    let sub_miscellaneous_iter27 = treestore.append(Some(&miscellaneous_iter));
-    treestore.set_value(&sub_miscellaneous_iter27, 0, &"ZoomData".to_value());
-    /*==============================================================================*/
+    for &item_name in &miscellaneous_item_names {
+        let sub_miscellaneous_iter = treestore.append(Some(&miscellaneous_iter));
+        treestore.set_value(&sub_miscellaneous_iter, 0, &item_name.to_value());
+    }
 
     /*
      * SpecialEffect Structure
@@ -503,59 +326,16 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&specialeffect_iter, 0, &"SpecialEffect".to_value());
 
     /* Sub-levels */
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"AddOnNode".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"CameraShot".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Debris".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"EffectShader".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Explosion".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Footstep".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Footstep Set".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"GodRays".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Hazard".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Imagespace".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(
-        &sub_specialeffect_iter1,
-        0,
-        &"Imagespace Modifier".to_value(),
-    );
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"ImpactData".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"ImpactDataSet".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"LensFlare".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Material Type".to_value());
-
-    let sub_specialeffect_iter1 = treestore.append(Some(&specialeffect_iter));
-    treestore.set_value(&sub_specialeffect_iter1, 0, &"Projectile".to_value());
-    /*==============================================================================*/
+    let specialeffect_item_names = [
+        "AddOnNode", "CameraShot", "Debris", "EffectShader", "Explosion", "Footstep",
+        "Footstep Set", "GodRays", "Hazard", "Imagespace", "Imagespace Modifier",
+        "ImpactData", "ImpactDataSet", "LensFlare", "Material Type", "Projectile"
+    ];
+    
+    for &item_name in &specialeffect_item_names {
+        let sub_specialeffect_iter = treestore.append(Some(&specialeffect_iter));
+        treestore.set_value(&sub_specialeffect_iter, 0, &item_name.to_value());
+    }
 
     /*
      * WorldData Structure
@@ -575,34 +355,15 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&worlddata_iter, 0, &"WorldData".to_value());
 
     /* Sub-levels */
-
-    let sub_worlddata_iter1 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter1, 0, &"Climate".to_value());
-
-    let sub_worlddata_iter2 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter2, 0, &"Encounter Zone".to_value());
-
-    let sub_worlddata_iter3 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter3, 0, &"Lighting Template".to_value());
-
-    let sub_worlddata_iter4 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter4, 0, &"Location".to_value());
-
-    let sub_worlddata_iter5 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter5, 0, &"Location Ref Type".to_value());
-
-    let sub_worlddata_iter6 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter6, 0, &"Shader Particle".to_value());
-
-    let sub_worlddata_iter7 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter7, 0, &"Visual Effect".to_value());
-
-    let sub_worlddata_iter8 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter8, 0, &"WaterType".to_value());
-
-    let sub_worlddata_iter9 = treestore.append(Some(&worlddata_iter));
-    treestore.set_value(&sub_worlddata_iter9, 0, &"Weather".to_value());
-    /*==============================================================================*/
+    let worlddata_item_names = [
+        "Climate", "Encounter Zone", "Lighting Template", "Location", "Location Ref Type",
+        "Shader Particle", "Visual Effect", "WaterType", "Weather"
+    ];
+    
+    for &item_name in &worlddata_item_names {
+        let sub_worlddata_iter = treestore.append(Some(&worlddata_iter));
+        treestore.set_value(&sub_worlddata_iter, 0, &item_name.to_value());
+    }    
 
     /*
      * WorldObjects Structure
@@ -622,41 +383,19 @@ fn build_treeview() -> TreeView {
     treestore.set_value(&worldobjects_iter, 0, &"WorldObjects".to_value());
 
     /* Sub-levels */
+    let worldobjects_item_names = [
+        "Activator", "Container", "Door", "Flora", "Grass", "Light", 
+        "MoveableStatic", "Static", "Terminal", "Tree"
+    ];
+    
+    for &item_name in &worldobjects_item_names {
+        let sub_worldobjects_iter = treestore.append(Some(&worldobjects_iter));
+        treestore.set_value(&sub_worldobjects_iter, 0, &item_name.to_value());
+    }
 
-    let sub_worldobjects_iter1 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter1, 0, &"Activator".to_value());
-
-    let sub_worldobjects_iter2 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter2, 0, &"Container".to_value());
-
-    let sub_worldobjects_iter3 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter3, 0, &"Door".to_value());
-
-    let sub_worldobjects_iter4 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter4, 0, &"Flora".to_value());
-
-    let sub_worldobjects_iter5 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter5, 0, &"Grass".to_value());
-
-    let sub_worldobjects_iter6 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter6, 0, &"Light".to_value());
-
-    let sub_worldobjects_iter7 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter7, 0, &"MoveableStatic".to_value());
-
-    let sub_worldobjects_iter8 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter8, 0, &"Static".to_value());
-
-    let sub_worldobjects_iter9 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter9, 0, &"Terminal".to_value());
-
-    let sub_worldobjects_iter10 = treestore.append(Some(&worldobjects_iter));
-    treestore.set_value(&sub_worldobjects_iter10, 0, &"Tree".to_value());
-    /*==============================================================================*/
-
+    /* Fill from all categories */
     let all_iter = treestore.append(None);
     treestore.set_value(&all_iter, 0, &"All".to_value());
-    /*==============================================================================*/
 
     // Default to collapsed state.
     treeview.collapse_all();
